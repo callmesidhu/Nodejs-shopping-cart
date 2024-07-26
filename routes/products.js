@@ -3,7 +3,18 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('products', { title: 'Express' });
+  let products=[{
+    name:"iphone 14",
+    price: 79999,
+    discription:"offer closes soon",
+    image:"images/product-10.jpg"
+  },{
+    name:"S23",
+    price: 89222,
+    discription: "android king",
+    image:"images/product-9.jpg"
+  }]
+  res.render('products', { products });
 });
 
 module.exports = router;
