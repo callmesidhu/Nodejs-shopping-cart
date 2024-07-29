@@ -28,17 +28,9 @@ router.get('/', function(req, res, next) {
           res.render('admin',{ products })
 });
 
-router.post('/submit', async (req, res) => {
-  try {
-    const formData = new Form({
-      product: req.body
-    });
-
-    await formData.save();
-    res.status(200).send('Form data saved successfully');
-  } catch (error) {
-    res.status(500).send('Error saving form data');
-  }
-});
+router.post('/',(req,res)=>{
+  console.log(req.body);
+  console.log(req.files.image)
+})
 
 module.exports = router;
