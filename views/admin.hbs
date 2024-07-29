@@ -12,92 +12,104 @@
 </head>
 
 <body bgcolor="#e1e5e6">
-    <div class="container" >
+    <div class="container">
         <div class="navbar">
             <div class="logo">
                 <a href="/"><img src="images/logo.png" alt="logo" width="125px"></a>
             </div>
             <nav>
+                <h1>Admin Panel</h1>
                 <ul id="MenuItems">
-                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/account">Account</a></li>
                 </ul>
             </nav>
         </div>
     </div>
-
+    
     <!-- Cart items details -->
     <div class="small-container cart-page">
+        <ul id="MenuItems" style="display: flex; margin: 12px;">
+            <h2><a href="">&nbsp;Users&nbsp;</a></h2>
+            <h2><a href="">&nbsp;Products&nbsp;</a></h2>
+            <h2><a href="">&nbsp;Orders&nbsp;</a></h2>
+        </ul>
         <table>
             <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Subtotal</th>
+                <th>Current Products</th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tr>
+
+            {{#each products}}
             <tr>
                 <td>
                     <div class="cart-info">
-                        <img src="images/buy-1.jpg">
+                        <img src={{this.image}}>
                         <div>
-                            <p>Red Printed T-Shirt</p>
-                            <small>Price: $50.00</small>
+                            <p>{{this.name}}</p>
+                            <small>{{this.discription}}</small>
                             <br>
-                            <a href="">Remove</a>
+                            <a>{{this.price}}</a>
                         </div>
                     </div>
                 </td>
-                <td><input type="number" value="1"></td>
-                <td>$50.00</td>
+                <td><button style="padding: 10px;"><h3>Delete</h3></button></td>
+            </tr>
+            {{/each}}
+
+        </table>
+        <table>
+            <tr>
+                <th>Add Product</th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tr>
             <tr>
-                <td>
-                    <div class="cart-info">
-                        <img src="images/buy-2.jpg">
-                        <div>
-                            <p>Red Printed T-Shirt</p>
-                            <small>Price: $50.00</small>
-                            <br>
-                            <a href="">Remove</a>
-                        </div>
-                    </div>
-                </td>
-                <td><input type="number" value="1"></td>
-                <td>$50.00</td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="cart-info">
-                        <img src="images/buy-3.jpg">
-                        <div>
-                            <p>Red Printed T-Shirt</p>
-                            <small>Price: $50.00</small>
-                            <br>
-                            <a href="">Remove</a>
-                        </div>
-                    </div>
-                </td>
-                <td><input type="number" value="1"></td>
-                <td>$50.00</td>
+
             </tr>
         </table>
 
+        <!-- Add new product form -->
+        <div class="add-product-form">
+
+            <form action="/admin/submit" method="post" style="display: flex; flex-direction: column; gap: 10px;">
+                <div>
+                    <label for="title">Product Title:</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                <div>
+                    <label for="image">Product Image</label>
+                    <input type="file" id="image" name="image" required>
+                </div>
+                <div style="align-items: center; display: flex;">
+                    <label for="description">Product Description:</label>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
+                <div>
+                    <label for="price">Product Price:</label>
+                    <input type="number" id="price" name="price" required>
+                </div>
+                <div>
+                    <button type="submit" style="padding: 10px;"><h3>Add Product</h3></button>
+                </div>
+            </form>
+        </div>
     </div>
 
-
     <!-- javascript -->
-
     <script>
         var MenuItems = document.getElementById("MenuItems");
         MenuItems.style.maxHeight = "0px";
         function menutoggle() {
             if (MenuItems.style.maxHeight == "0px") {
                 MenuItems.style.maxHeight = "200px"
-            }
-            else {
+            } else {
                 MenuItems.style.maxHeight = "0px"
             }
         }
     </script>
-
 </body>
 
 </html>

@@ -13,6 +13,11 @@ router.get('/', function(req, res, next) {
     price: 89222,
     discription: "android king",
     image:"images/product-9.jpg"
+  },{
+    name:"realme 12 pro",
+    price: 29999,
+    discription: "budget king",
+    image:"images/product-8.jpg"
   }]
   res.render('products', { products });
 });
