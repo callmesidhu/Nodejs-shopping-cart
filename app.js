@@ -14,6 +14,8 @@ var adminRouter = require('./routes/admin')
 
 var app = express();
 var db=require('./config/connection')
+var fileUpload=require('express-fileupload')
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,11 +28,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-db.connect(()=>{
- console.log("MongoDB connected");
+db.connect((err)=>{
+ if(err) console.log("Connection failed :"+err);
+ else console.log("MongoDB Connected port: 27017")
 })
 
-
+app.use(fileUpload())
 
 
 app.use('/', userRouter);
