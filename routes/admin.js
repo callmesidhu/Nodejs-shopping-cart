@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
    const products=[{
                     name:"iphone 14",
@@ -28,9 +27,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/submit', (req, res) => {
-  
   console.log(req.body);
-  res.send('Form submitted! Check the console for the values.');
+  res.render('admin')
 });
 
 module.exports = router;
