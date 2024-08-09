@@ -1,7 +1,7 @@
 var express = require('express');
 const productData = require('../data/product-data');
 var router = express.Router();
-
+var productHelper=require('../data/product-data')
 
 router.get('/', function(req, res, next) {
    const products=[{
@@ -31,6 +31,7 @@ router.get('/', function(req, res, next) {
 router.post('/',(req,res)=>{
   console.log(req.body);
   console.log(req.files.image)
+  
 })
 
 module.exports = router;
