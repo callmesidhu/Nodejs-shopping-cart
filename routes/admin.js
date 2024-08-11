@@ -1,37 +1,50 @@
-var express = require('express');
-const productData = require('../data/product-data');
-var router = express.Router();
-var productHelper=require('../data/product-data')
+const express = require('express');
+const router = express.Router();
+const multer = require('multer');
+const Product = require('../models/Product'); // Replace with the correct path
 
-router.get('/', function(req, res, next) {
-   const products=[{
-                    name:"iphone 14",
-                    price: 79999,
-                    discription:"offer closes soon",
-                    image:"images/product-10.jpg"
-                  },{
-                    name:"S23",
-                    price: 89222,
-                    discription: "android king",
-                    image:"images/product-9.jpg"
-                  },{
-                    name:"Shoe",
-                    price: 5000,
-                    discription: "best shoe ever",
-                    image: "images/product-7.jpg"
-                  },{
-                    name:"watch",
-                    price: 1222,
-                    discription: "android watch",
-                    image:"images/product-8.jpg"
-                  }]
-          res.render('admin',{ products })
+// Set up multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/images'); // Save images in the public/images directory
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`); // Ensure unique filenames
+  }
 });
 
-router.post('/',(req,res)=>{
-  console.log(req.body);
-  console.log(req.files.image)
-  
-})
+const upload = multer({ storage });
+
+// Render the admin panel with current products
+router.get('/', async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.render('admin', { products });
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// Handle form submission
+router.post('/add', upload.single('image'), async (req, res) => {
+  try {
+    const { title, description, price } = req.body;
+    const imagePath = `/images/${req.file.filename}`;
+
+    const newProduct = new Product({
+      title,
+      image: imagePath,
+      description,
+      price
+    });
+
+    await newProduct.save();
+    res.redirect('/admin');
+  } catch (error) {
+    console.error('Error adding product:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 module.exports = router;
