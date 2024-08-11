@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const Product = require('../models/Product'); // Replace with the correct path
+const products={}
 
 // Set up multer for file uploads
 const storage = multer.diskStorage({
@@ -27,7 +28,8 @@ router.get('/', async (req, res) => {
 });
 
 // Handle form submission
-router.post('/add', upload.single('image'), async (req, res) => {
+router.post('/admin', upload.single('image'), async (req, res) => {
+  
   try {
     const { title, description, price } = req.body;
     const imagePath = `/images/${req.file.filename}`;
@@ -38,7 +40,7 @@ router.post('/add', upload.single('image'), async (req, res) => {
       description,
       price
     });
-
+    console.log(newProduct)
     await newProduct.save();
     res.redirect('/admin');
   } catch (error) {
