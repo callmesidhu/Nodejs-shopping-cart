@@ -2,35 +2,55 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const Product = require('../models/Product'); // Replace with the correct path
-const products={}
+const path = require('path');
+
+
 
 // Set up multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/images'); // Save images in the public/images directory
+    cb(null, path.join(__dirname, '../public/images')); // Save images in the public/images directory
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`); // Ensure unique filenames
   }
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage:storage });
+
+
+
 
 // Render the admin panel with current products
 router.get('/', async (req, res) => {
-  try {
-    const products = await Product.find();
+  const products=[{
+    name:"iphone 14",
+    price: 79999,
+    discription:"offer closes soon",
+    image:"images/product-10.jpg"
+  },{
+    name:"S23",
+    price: 89222,
+    discription: "android king",
+    image:"images/product-9.jpg"
+  },{
+    name:"Shoe",
+    price: 5000,
+    discription: "best shoe ever",
+    image: "images/product-7.jpg"
+  },{
+    name:"watch",
+    price: 1222,
+    discription: "android watch",
+    image:"images/product-8.jpg"
+  }]
     res.render('admin', { products });
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    res.status(500).send('Internal Server Error');
-  }
 });
 
-// Handle form submission
-router.post('/admin', upload.single('image'), async (req, res) => {
-  
+// Handle form submission and return updated product list
+router.post('/admin', upload.single('image'), async (req, res, next) => {
   try {
+    console.log(req.body)
     const { title, description, price } = req.body;
     const imagePath = `/images/${req.file.filename}`;
 
@@ -40,12 +60,14 @@ router.post('/admin', upload.single('image'), async (req, res) => {
       description,
       price
     });
-    console.log(newProduct)
-    await newProduct.save();
+
+    const savedData = await newProduct.save();
+    console.log('Saved data:', savedData);
     res.redirect('/admin');
+
   } catch (error) {
     console.error('Error adding product:', error);
-    res.status(500).send('Internal Server Error');
+    next(error);
   }
 });
 
