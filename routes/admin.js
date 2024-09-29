@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-const Product = require('./models/Product'); // Adjust the path if necessary
+const Product = require('../models/Product'); // Correctly import the Product model
+
 
 /* GET admin page. */
 router.get('/', function(req, res, next) {    
@@ -8,22 +9,34 @@ router.get('/', function(req, res, next) {
 });
 
 // Corrected route for adding a product
-router.post('/add', async function(req, res) {
-        try {
-                const newProduct = new Product({
-                    title: req.body.title,
-                    image: req.body.image, // Handle image upload properly
-                    description: req.body.description,
-                    price: req.body.price
-                });
-        
-                await newProduct.save(); // Save the product to the database
-                console.log('Product added:', newProduct);
-                res.redirect('/admin'); // Redirect after successful addition
-            } catch (error) {
-                console.error('Error adding product:', error);
-                res.status(500).send('Internal Server Error');
-            }
+router.post('/add',async function(req, res) {
+  try {
+    const { title, image, description, price } = req.body;
+
+    // Simple validation
+    if (!title || !image || !description || !price) {
+        return res.status(400).send('All fields are required');
+    }
+
+    // Create a new product instance
+    const newProduct = new Product({
+        title,
+        image,
+        description,
+        price: parseFloat(price), // Ensure price is a number
+    });
+
+    // Save the product to the database
+    await newProduct.save();
+
+    console.log('Product added successfully:', newProduct);
+
+    // Redirect back to the admin page or show a success message
+    res.redirect('/admin');
+} catch (error) {
+    console.error('Error adding product:', error);
+    res.status(500).send('Server error');
+}
 });
 
 module.exports = router;
