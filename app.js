@@ -1,6 +1,7 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
@@ -9,22 +10,33 @@ var adminRouter = require('./routes/admin');
 
 
 var hbs = require('hbs'); 
+var mongoose = require('mongoose');
+
 
 var app = express();
+var fileUpdload=require('express-fileupload')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs'); // Set hbs as the view engine
+
+
+// To parse URL-encoded bodies (sent by HTML forms)
+app.use(express.urlencoded({ extended: true }));
+
+// To parse JSON bodies
+app.use(express.json());
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(fileUpdload())
 
 app.use('/', homeRouter);
 app.use('/admin', adminRouter);
-//app.use('/users', usersRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
