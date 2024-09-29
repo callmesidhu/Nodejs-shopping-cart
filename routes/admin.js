@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
                         price:'$200'
                 },
         ]
-  res.render('index.hbs', { products });
+  res.render('admin.hbs', { products });
 });
 
 module.exports = router;
