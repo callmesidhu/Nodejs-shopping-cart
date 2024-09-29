@@ -9,6 +9,7 @@ router.get('/', function(req, res, next) {
 // Corrected route for adding a product
 router.post('/add', function(req, res) {
     console.log(req.body); // This will log the form data
+    
     res.redirect('/admin');
 });
 

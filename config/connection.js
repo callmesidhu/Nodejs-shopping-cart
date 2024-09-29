@@ -1,39 +1,15 @@
-const { MongoClient } = require('mongodb');
+// config/db.js
+const mongoose = require('mongoose');
 
-// Connection URI
-const uri = 'mongodb://localhost:27017';
+const connectDB = async () => {
+    try {
+        const mongoDB = 'mongodb://localhost:27017/redstore_db'; // Update with your database name
+        await mongoose.connect(mongoDB); // Remove the options here
+        console.log('MongoDB connected successfully');
+    } catch (error) {
+        console.error('MongoDB connection error:', error);
+        process.exit(1); // Exit the process with failure
+    }
+};
 
-// Create a new MongoClient
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-// Database Name
-const dbName = 'redstore_db';
-
-async function connectToMongoDB() {
-  try {
-    // Connect to the MongoDB server
-    await client.connect();
-
-    console.log('Connected successfully to MongoDB server');
-    
-    // Specify the database to use
-    const db = client.db(dbName);
-
-    // Example: Inserting a document
-    const collection = db.collection('myCollection');
-    const result = await collection.insertOne({ name: 'John Doe', age: 25 });
-    console.log('Document inserted:', result.insertedId);
-
-    // Example: Querying the database
-    const users = await collection.find({}).toArray();
-    console.log('Users:', users);
-
-  } catch (err) {
-    console.error(err);
-  } finally {
-    // Ensure the client closes
-    await client.close();
-  }
-}
-
-connectToMongoDB();
+module.exports = connectDB;

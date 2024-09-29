@@ -7,10 +7,13 @@ var logger = require('morgan');
 
 var homeRouter = require('./routes/home');
 var adminRouter = require('./routes/admin');
+var connectDB = require('./config/connection'); // Import the connectDB function
+
+// Connect to MongoDB
+connectDB(); // Call the function to connect to the database
 
 
 var hbs = require('hbs'); 
-var mongoose = require('mongoose');
 
 
 var app = express();
