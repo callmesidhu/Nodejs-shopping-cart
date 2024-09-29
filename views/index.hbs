@@ -68,12 +68,14 @@
     <div class="small-container">
         <h2 class="title">Featured Products</h2>
         <div class="row">
+            {{#each products}}
             <div class="col-4">
                 <a href="/productDetails"><img src="images/product-1.jpg"></a>
-                <h4>Red Printed T-Shirt</h4>
+                <h4>{{this.name}}</h4>
                 <h5>best product ever</h5>
                 <p>$50.00</p>
             </div>
+            {{/each}}
         </div>
     </div>
 
