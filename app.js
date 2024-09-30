@@ -7,6 +7,7 @@ var logger = require('morgan');
 
 var homeRouter = require('./routes/home');
 var adminRouter = require('./routes/admin');
+var uploadRo
 var connectDB = require('./config/connection'); // Import the connectDB function
 
 // Connect to MongoDB

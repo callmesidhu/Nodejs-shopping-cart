@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const Product = require('../models/Product'); // Correctly import the Product model
-const multer = require('multer');
-
 
 
 
@@ -37,6 +35,10 @@ router.post('/add', async function(req, res) {
     }
 });
 
+
+
+
+
 /* GET route to fetch all products */
 router.get('/', async (req, res) => {
     try {
@@ -49,5 +51,6 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: 'Server error' }); // Handle any errors
     }
 });
+
 
 module.exports = router; // Export the router
